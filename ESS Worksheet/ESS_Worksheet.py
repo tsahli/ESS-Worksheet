@@ -1,5 +1,7 @@
 import csv
 import openpyxl
+import os.path
+from os import path
 
 wb = openpyxl.load_workbook('Worksheet.xlsx')
 ws = wb.active
@@ -13,7 +15,14 @@ with open('Jobs by Estimator.csv') as csvFile:
             lineCount += 1
         else:
             saveName = row[0] + "_" + row[1] + ".xlsx"
+            dirName = row[0]
             ws['B1'] = row[1]
             ws['B2'] = row[2]
             ws['B3'] = row[0]
-            wb.save(filename = saveName)
+            if path.exists(dirName):
+                os.chdir(dirName)
+                wb.save(filename = saveName)
+            else:
+                os.mkdir(dirName)
+                os.chdir(dirName)
+                wb.save(filename = saveName)
